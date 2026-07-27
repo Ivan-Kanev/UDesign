@@ -38,9 +38,10 @@ export function useMotionSystem() {
 
       const revealElements = gsap.utils.toArray<HTMLElement>(".reveal");
       revealElements.forEach((element, index) => {
+        const isGridCard = element.classList.contains("status-card") || element.classList.contains("app-card");
         gsap.fromTo(
           element,
-          { y: 34, autoAlpha: 0 },
+          { y: isGridCard ? 0 : 34, autoAlpha: 0 },
           {
             y: 0,
             autoAlpha: 1,

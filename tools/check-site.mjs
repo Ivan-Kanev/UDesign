@@ -52,13 +52,16 @@ const checks = [
   ["description", appHtml.includes("UPerifery") && appHtml.includes("UPlugPay")],
   ["published root", html.includes("./assets/site/") && !html.includes("/src/main.tsx")],
   ["vite source entry", appHtml.includes('src="/src/main.tsx"')],
-  ["sections", ["ecosystem", "status", "apps", "identity", "studio"].every((id) => app.includes(`id="${id}"`))],
+  ["sections", ["ecosystem", "status", "apps", "identity", "about", "contact", "studio"].every((id) => app.includes(`id="${id}"`))],
   ["reduced motion", css.includes("prefers-reduced-motion")],
   ["keyboard skip link", app.includes("Skip to content")],
   ["gsap scrolltrigger", motion.includes("ScrollTrigger")],
   ["lenis", motion.includes("Lenis")],
   ["three hero", three.includes("THREE")],
   ["technology prompt", prompt.includes("React, TypeScript, and Vite") && prompt.includes("GSAP ScrollTrigger")],
+  ["professional contact", app.includes("handleContactSubmit") && app.includes("Prepare email") && app.includes("About Ivan")],
+  ["language switcher", app.includes("udesign-language") && app.includes("setLanguage") && app.includes("EN") && app.includes("BG")],
+  ["theme switcher", app.includes("udesign-theme") && app.includes("setTheme") && css.includes(':root[data-theme="light"]') && css.includes(".site-controls")],
   ["real app content", data.includes("UPerifery") && data.includes("UPlugPay") && data.includes("Ready for Distribution")]
 ];
 
