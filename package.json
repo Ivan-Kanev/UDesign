@@ -1,0 +1,19 @@
+{
+  "name": "udesign",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Premium GitHub Pages site and brand foundation for UDesign by Ivan Kanev.",
+  "type": "module",
+  "scripts": {
+    "dev": "python3 -m http.server 4173",
+    "check": "node tools/check-site.mjs"
+  },
+  "keywords": [
+    "udesign",
+    "ivan-kanev",
+    "github-pages",
+    "brand-system"
+  ],
+  "author": "Ivan Kanev",
+  "license": "UNLICENSED"
+}
