@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host 127.0.0.1 --port 4174",
-    "build": "tsc && vite build",
+    "build": "tsc && vite build && node tools/publish-root.mjs",
     "preview": "vite preview --host 127.0.0.1 --port 4174",
     "check": "node tools/check-site.mjs",
     "lint": "eslint ."

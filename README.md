@@ -71,6 +71,28 @@ The check validates the required static files and important page markers.
 
 ## GitHub Pages Deployment
 
+### Manual Upload
+
+The repository-root `index.html` is already compiled for GitHub Pages. If you upload files manually and set Pages to deploy from the branch root, include the whole project folder except generated local dependencies.
+
+Upload these important files/folders:
+
+- `index.html`
+- `app.html`
+- `assets/`
+- `src/`
+- `docs/`
+- `tools/`
+- `package.json`
+- `pnpm-lock.yaml`
+- `vite.config.ts`
+- `tsconfig.json`
+- `.nojekyll`
+
+Do not upload `node_modules`.
+
+### GitHub Actions
+
 1. Push this folder to a GitHub repository.
 2. In repository settings, open **Pages**.
 3. Set the source to **GitHub Actions**.

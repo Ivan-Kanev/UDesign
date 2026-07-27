@@ -2,6 +2,7 @@ import { readFile, stat } from "node:fs/promises";
 
 const requiredFiles = [
   "index.html",
+  "app.html",
   "src/styles.css",
   "src/main.tsx",
   "src/App.tsx",
@@ -9,6 +10,7 @@ const requiredFiles = [
   "src/motion/useMotionSystem.ts",
   "src/visuals/HeroScene.tsx",
   "assets/favicon.svg",
+  "assets/site",
   "assets/apps/ufood.png",
   "assets/apps/videoy.png",
   "assets/apps/avocue.png",
@@ -37,6 +39,7 @@ const requiredFiles = [
 await Promise.all(requiredFiles.map((file) => stat(file)));
 
 const html = await readFile("index.html", "utf8");
+const appHtml = await readFile("app.html", "utf8");
 const css = await readFile("src/styles.css", "utf8");
 const app = await readFile("src/App.tsx", "utf8");
 const data = await readFile("src/data.ts", "utf8");
@@ -46,8 +49,9 @@ const prompt = await readFile("docs/website-development-prompt.md", "utf8");
 
 const checks = [
   ["title", html.includes("<title>UDesign by Ivan Kanev</title>")],
-  ["description", html.includes("UPerifery") && html.includes("UPlugPay")],
-  ["react entry", html.includes('src="/src/main.tsx"')],
+  ["description", appHtml.includes("UPerifery") && appHtml.includes("UPlugPay")],
+  ["published root", html.includes("./assets/site/") && !html.includes("/src/main.tsx")],
+  ["vite source entry", appHtml.includes('src="/src/main.tsx"')],
   ["sections", ["ecosystem", "status", "apps", "identity", "studio"].every((id) => app.includes(`id="${id}"`))],
   ["reduced motion", css.includes("prefers-reduced-motion")],
   ["keyboard skip link", app.includes("Skip to content")],
