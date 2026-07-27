@@ -3,25 +3,59 @@ import { readFile, stat } from "node:fs/promises";
 const requiredFiles = [
   "index.html",
   "src/styles.css",
-  "src/main.js",
+  "src/main.tsx",
+  "src/App.tsx",
+  "src/data.ts",
+  "src/motion/useMotionSystem.ts",
+  "src/visuals/HeroScene.tsx",
   "assets/favicon.svg",
+  "assets/apps/ufood.png",
+  "assets/apps/videoy.png",
+  "assets/apps/avocue.png",
+  "assets/apps/switchair.png",
+  "assets/apps/budgetflow.png",
+  "assets/apps/uproxy.png",
+  "assets/apps/ucircuit.PNG",
+  "assets/apps/gitbudget.PNG",
+  "assets/apps/circuitlabdesigner.png",
+  "assets/appstore-connect/videoy.png",
+  "assets/appstore-connect/uperifery.png",
+  "assets/appstore-connect/uplugpay.png",
+  "assets/appstore-connect/ucircuit.png",
+  "assets/appstore-connect/gitbudgetstudio.png",
+  "assets/appstore-connect/switchair.png",
+  "assets/appstore-connect/avocue.png",
+  "assets/appstore-connect/ufood.png",
+  "assets/appstore-connect/budgetflowstudio.png",
+  "assets/appstore-connect/uproxi.png",
+  "assets/appstore-connect/circuitlab-designer.png",
   ".nojekyll",
-  "README.md"
+  "README.md",
+  "docs/website-development-prompt.md"
 ];
 
 await Promise.all(requiredFiles.map((file) => stat(file)));
 
 const html = await readFile("index.html", "utf8");
 const css = await readFile("src/styles.css", "utf8");
-const js = await readFile("src/main.js", "utf8");
+const app = await readFile("src/App.tsx", "utf8");
+const data = await readFile("src/data.ts", "utf8");
+const motion = await readFile("src/motion/useMotionSystem.ts", "utf8");
+const three = await readFile("src/visuals/HeroScene.tsx", "utf8");
+const prompt = await readFile("docs/website-development-prompt.md", "utf8");
 
 const checks = [
   ["title", html.includes("<title>UDesign by Ivan Kanev</title>")],
-  ["description", html.includes("premium software ecosystem")],
-  ["sections", ["ecosystem", "identity", "products", "contact"].every((id) => html.includes(`id="${id}"`))],
+  ["description", html.includes("UPerifery") && html.includes("UPlugPay")],
+  ["react entry", html.includes('src="/src/main.tsx"')],
+  ["sections", ["ecosystem", "status", "apps", "identity", "studio"].every((id) => app.includes(`id="${id}"`))],
   ["reduced motion", css.includes("prefers-reduced-motion")],
-  ["keyboard skip link", html.includes("Skip to content")],
-  ["canvas motion", js.includes("signal-canvas")]
+  ["keyboard skip link", app.includes("Skip to content")],
+  ["gsap scrolltrigger", motion.includes("ScrollTrigger")],
+  ["lenis", motion.includes("Lenis")],
+  ["three hero", three.includes("THREE")],
+  ["technology prompt", prompt.includes("React, TypeScript, and Vite") && prompt.includes("GSAP ScrollTrigger")],
+  ["real app content", data.includes("UPerifery") && data.includes("UPlugPay") && data.includes("Ready for Distribution")]
 ];
 
 const failed = checks.filter(([, passed]) => !passed).map(([name]) => name);

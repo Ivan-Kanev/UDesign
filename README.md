@@ -1,8 +1,17 @@
 # UDesign
 
-UDesign is the umbrella identity for Ivan Kanev's ecosystem of focused software products: UCircuit, UPlugPlay, UPerifery, and future products built around the same signature letter.
+UDesign is the umbrella identity for Ivan Kanev's ecosystem of focused software products: VideoY, UPerifery, UPlugPay, UCircuit, GitBudgetStudio, SwitchAir, AvoCue, UFood, BudgetFlowStudio, UProxi, CircuitLab Designer, and future products built around the same signature letter.
 
-The site is intentionally static and dependency-free so it can be published directly with GitHub Pages from the repository root. The brand system uses the `U` as the master mark, product names as family extensions, and a restrained dark interface with luminous cyan, signal green, white, and graphite accents.
+The site is built with React, TypeScript, and Vite so it can grow as a polished product hub while still deploying cleanly to GitHub Pages as static files. The brand system uses the `U` as the master mark, product names as family extensions, and a restrained dark interface with luminous cyan, signal green, white, and graphite accents.
+
+## Technology Decision
+
+- **React + TypeScript + Vite:** justified by the interactive app data model, filters, status board, modals, and long-term maintainability.
+- **GSAP + ScrollTrigger:** used for deliberate scroll reveals and premium section motion.
+- **Lenis:** used for smoother scrolling and synchronized with ScrollTrigger.
+- **Three.js:** used only for the focused hero U signal scene, with reduced-motion fallback.
+- **Custom CSS:** keeps the visual identity bespoke and avoids a generic component-library look.
+- **Skipped for this pass:** Tailwind CSS, Motion for React, and Lucide React because the current implementation does not need them to improve quality.
 
 ## Brand Direction
 
@@ -13,16 +22,28 @@ The site is intentionally static and dependency-free so it can be published dire
 - **Motion language:** smooth reveals, dimensional depth, subtle cursor response, and reduced-motion support
 - **Visual language:** black glass, thin rules, kinetic grids, luminous product tokens, tight typography, and reusable system spacing
 
+The reusable website-development prompt lives in [docs/website-development-prompt.md](docs/website-development-prompt.md).
+
 ## Project Structure
 
 ```text
 UDesign/
   index.html
   src/
-    main.js
+    App.tsx
+    data.ts
+    main.tsx
+    motion/
+      useMotionSystem.ts
+    visuals/
+      HeroScene.tsx
     styles.css
   assets/
     favicon.svg
+    apps/
+      app icons copied from Ivan's live apps status page
+    appstore-connect/
+      app icons extracted from the App Store Connect status screenshot
   tools/
     check-site.mjs
   README.md
@@ -34,10 +55,11 @@ UDesign/
 ## Local Preview
 
 ```bash
+npm install
 npm run dev
 ```
 
-Then open `http://localhost:4173`.
+Then open the local URL printed by Vite.
 
 ## Quality Check
 
@@ -51,7 +73,5 @@ The check validates the required static files and important page markers.
 
 1. Push this folder to a GitHub repository.
 2. In repository settings, open **Pages**.
-3. Set the source to **Deploy from a branch**.
-4. Choose the default branch and `/root`.
-5. Save. GitHub Pages will serve `index.html` directly.
-
+3. Set the source to **GitHub Actions**.
+4. Push to `main`. The included workflow builds Vite and publishes `dist`.
