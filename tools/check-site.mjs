@@ -59,7 +59,8 @@ const checks = [
   ["lenis", motion.includes("Lenis")],
   ["three hero", three.includes("THREE")],
   ["technology prompt", prompt.includes("React, TypeScript, and Vite") && prompt.includes("GSAP ScrollTrigger")],
-  ["professional contact", app.includes("handleContactSubmit") && app.includes("Prepare email") && app.includes("About Ivan")],
+  ["professional contact", app.includes("handleContactSubmit") && app.includes("Send from my email") && app.includes("replyTo") && app.includes("About Ivan")],
+  ["working app filters", app.includes("AppFilterId") && app.includes("activeAppFilter") && app.includes("aria-pressed") && app.includes("data-filter") && css.includes(".filter-result")],
   ["language switcher", app.includes("udesign-language") && app.includes("setLanguage") && app.includes("EN") && app.includes("BG")],
   ["theme switcher", app.includes("udesign-theme") && app.includes("setTheme") && css.includes(':root[data-theme="light"]') && css.includes(".site-controls")],
   ["real app content", data.includes("UPerifery") && data.includes("UPlugPay") && data.includes("Ready for Distribution")]

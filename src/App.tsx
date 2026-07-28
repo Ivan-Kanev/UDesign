@@ -62,12 +62,15 @@ const copy = {
       readyLabel: "Ready for Distribution",
       reviewLabel: "Waiting for Review",
     },
-    apps: {
+      apps: {
       eyebrow: "App Ecosystem",
       title: "Real products. Real icons. One premium home.",
       count: "apps",
       native: "native",
       active: "active",
+      showing: "Showing",
+      emptyTitle: "No apps in this view yet.",
+      emptyBody: "Try another category or return to all apps.",
       filters: {
         all: "All",
         "u-family": "U Family",
@@ -102,21 +105,29 @@ const copy = {
     },
     contact: {
       eyebrow: "Contact",
-      title: "Let's talk about the next UDesign product.",
-      body: "Use the form to start a conversation about an app, support page, brand system, or future product idea. The form works on GitHub Pages by opening a prepared email draft.",
+      title: "Send a professional inquiry to Ivan.",
+      body: "Share your email, topic, and message. Because this site is hosted on GitHub Pages, the form prepares a polished email from your own mail app so Ivan can reply directly to your address.",
       portfolio: "App portfolio status",
+      direct: "Direct email",
+      promoTitle: "Need an app shaped around your workflow?",
+      promoBody: "If you have a specific idea, internal process, or everyday problem that deserves a focused iOS app, start the conversation here. Ivan can help turn that need into a clean, useful product direction.",
+      formTitle: "Project inquiry",
+      formNote: "Your email is required so Ivan can reply directly.",
       name: "Name",
       email: "Email",
       topic: "Topic",
       message: "Message",
-      namePlaceholder: "Your name",
-      emailPlaceholder: "you@example.com",
-      messagePlaceholder: "Tell me what you want to build or discuss.",
+      namePlaceholder: "Your full name",
+      emailPlaceholder: "your.email@example.com",
+      messagePlaceholder: "Tell Ivan what you want to build, improve, launch, or discuss.",
       topics: ["New app idea", "App support", "Brand or website", "Partnership"],
-      submit: "Prepare email",
-      prepared: "Your email app is opening with the message prepared.",
+      submit: "Send from my email",
+      prepared: "Your email app is opening with a professional message prepared.",
       subject: "UDesign inquiry from",
       visitor: "website visitor",
+      replyTo: "Reply-to email",
+      bodyLabel: "Message",
+      footer: "This will open your mail app and send the message from your email account.",
     },
     studio: {
       eyebrow: "Studio Direction",
@@ -178,12 +189,15 @@ const copy = {
       readyLabel: "Ready for Distribution",
       reviewLabel: "Waiting for Review",
     },
-    apps: {
+      apps: {
       eyebrow: "Екосистема от приложения",
       title: "Реални продукти. Реални икони. Един премиум дом.",
       count: "приложения",
       native: "native",
       active: "активни",
+      showing: "Показани",
+      emptyTitle: "Все още няма приложения в този изглед.",
+      emptyBody: "Избери друга категория или се върни към всички приложения.",
       filters: {
         all: "Всички",
         "u-family": "U Family",
@@ -218,21 +232,29 @@ const copy = {
     },
     contact: {
       eyebrow: "Контакт",
-      title: "Нека поговорим за следващия UDesign продукт.",
-      body: "Използвай формата за приложение, support страница, brand system или бъдеща продуктова идея. Тя работи в GitHub Pages чрез подготвен email draft.",
+      title: "Изпрати професионално запитване до Иван.",
+      body: "Добави своя имейл, тема и съобщение. Понеже сайтът е в GitHub Pages, формата подготвя професионален имейл от твоето mail приложение, за да може Иван да отговори директно.",
       portfolio: "Статус на приложенията",
+      direct: "Директен имейл",
+      promoTitle: "Имаш нужда от приложение, създадено около твоя процес?",
+      promoBody: "Ако имаш конкретна идея, вътрешен workflow или ежедневен проблем, който заслужава фокусирано iOS приложение, започни разговора тук. Иван може да помогне тази нужда да се превърне в чиста и полезна продуктова посока.",
+      formTitle: "Project inquiry",
+      formNote: "Имейлът е задължителен, за да може Иван да отговори директно.",
       name: "Име",
       email: "Имейл",
       topic: "Тема",
       message: "Съобщение",
-      namePlaceholder: "Твоето име",
-      emailPlaceholder: "you@example.com",
-      messagePlaceholder: "Опиши какво искаш да обсъдим или изградим.",
+      namePlaceholder: "Твоето пълно име",
+      emailPlaceholder: "your.email@example.com",
+      messagePlaceholder: "Опиши какво искаш да изградиш, подобриш, пуснеш или обсъдим.",
       topics: ["Нова идея за приложение", "Поддръжка", "Бранд или уебсайт", "Партньорство"],
-      submit: "Подготви имейл",
-      prepared: "Email приложението се отваря с подготвено съобщение.",
+      submit: "Изпрати от моя имейл",
+      prepared: "Email приложението се отваря с професионално подготвено съобщение.",
       subject: "UDesign запитване от",
       visitor: "посетител на сайта",
+      replyTo: "Имейл за отговор",
+      bodyLabel: "Съобщение",
+      footer: "Това ще отвори твоето mail приложение и ще изпрати съобщението от твоя имейл акаунт.",
     },
     studio: {
       eyebrow: "Посока на студиото",
@@ -257,16 +279,18 @@ const statusCopyKey: Record<StatusKind, "readyLabel" | "reviewLabel"> = {
   review: "reviewLabel",
 };
 
-const appFilters = [
-  "all",
-  "u-family",
-  "learning",
-  "utility",
-  "finance",
-  "lifestyle",
-  "appstore-ready",
-  "appstore-review",
-] as const;
+type AppFilterId = "all" | "u-family" | "learning" | "utility" | "finance" | "lifestyle" | "appstore-ready" | "appstore-review";
+
+const appFilters: Array<{ id: AppFilterId; matches: (app: AppInfo) => boolean }> = [
+  { id: "all", matches: () => true },
+  { id: "u-family", matches: (app) => app.tags.includes("u-family") },
+  { id: "learning", matches: (app) => app.category === "Learning" },
+  { id: "utility", matches: (app) => app.category === "Utility" || app.tags.includes("utility") },
+  { id: "finance", matches: (app) => app.category === "Finance" },
+  { id: "lifestyle", matches: (app) => app.category === "Lifestyle" },
+  { id: "appstore-ready", matches: (app) => app.statusKind === "ready" },
+  { id: "appstore-review", matches: (app) => app.statusKind === "review" },
+];
 
 const statusFilters = [
   "all",
@@ -303,10 +327,6 @@ function FounderMark({ compact = false }: { compact?: boolean }) {
             <stop offset="0.52" stopColor="#f6f8fb" />
             <stop offset="1" stopColor="#86ffb6" />
           </linearGradient>
-          <linearGradient id="markStroke" x1="28" x2="132" y1="132" y2="24" gradientUnits="userSpaceOnUse">
-            <stop stopColor="#86ffb6" />
-            <stop offset="1" stopColor="#66e9ff" />
-          </linearGradient>
         </defs>
         <circle className="mark-orbit" cx="80" cy="80" r="68" />
         <path className="mark-u-shadow" d="M45 28v52c0 27 13 45 35 45s35-18 35-45V28" />
@@ -315,7 +335,6 @@ function FounderMark({ compact = false }: { compact?: boolean }) {
         <text className="mark-ik" x="80" y="88" textAnchor="middle">
           IK
         </text>
-        <path className="mark-signature-line" d="M38 136c18-10 30-10 42 0s28 9 44-2" />
       </svg>
     </span>
   );
@@ -394,7 +413,7 @@ function AppModal({ app, onClose, language }: { app: AppInfo | null; onClose: ()
 export function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [selectedApp, setSelectedApp] = useState<AppInfo | null>(null);
-  const [appFilter, setAppFilter] = useState("all");
+  const [appFilter, setAppFilter] = useState<AppFilterId>("all");
   const [statusFilter, setStatusFilter] = useState<"all" | StatusKind>("all");
   const [contactStatus, setContactStatus] = useState("");
   const [language, setLanguage] = useState<Language>(getStoredLanguage);
@@ -405,7 +424,9 @@ export function App() {
 
   const readyCount = apps.filter((app) => app.statusKind === "ready").length;
   const reviewCount = apps.filter((app) => app.statusKind === "review").length;
-  const filteredApps = appFilter === "all" ? apps : apps.filter((app) => app.tags.includes(appFilter));
+  const activeAppFilter = appFilters.find((filter) => filter.id === appFilter) ?? appFilters[0];
+  const filteredApps = apps.filter(activeAppFilter.matches);
+  const appFilterCounts = Object.fromEntries(appFilters.map((filter) => [filter.id, apps.filter(filter.matches).length])) as Record<AppFilterId, number>;
   const filteredStatusApps = statusFilter === "all" ? apps : apps.filter((app) => app.statusKind === statusFilter);
   const orbitApps = apps.slice(0, 9);
 
@@ -434,7 +455,9 @@ export function App() {
     const topic = String(formData.get("topic") ?? "").trim();
     const message = String(formData.get("message") ?? "").trim();
     const subject = encodeURIComponent(`${t.contact.subject} ${name || t.contact.visitor}`);
-    const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nTopic: ${topic}\n\n${message}`);
+    const body = encodeURIComponent(
+      `Hello Ivan,\n\n${message}\n\n---\n${t.contact.name}: ${name}\n${t.contact.replyTo}: ${email}\n${t.contact.topic}: ${topic}\n\nSent from the UDesign website.`,
+    );
     window.location.href = `mailto:ikanev@icloud.com?subject=${subject}&body=${body}`;
     setContactStatus(t.contact.prepared);
   }
@@ -446,7 +469,7 @@ export function App() {
       </a>
       <div className="cursor-aura" aria-hidden="true" />
 
-      <header className="site-header reveal">
+      <header className="site-header">
         <a className="brand-lockup magnetic" href="#top" aria-label="UDesign home">
           <FounderMark compact />
           <span>
@@ -610,15 +633,27 @@ export function App() {
           </div>
 
           <div className="filter-bar reveal" aria-label="Filter apps by category">
-            {appFilters.map((value) => (
-              <button className={`filter ${appFilter === value ? "active" : ""}`} type="button" key={value} onClick={() => setAppFilter(value)}>
-                {t.apps.filters[value]}
+            {appFilters.map(({ id }) => (
+              <button
+                aria-pressed={appFilter === id}
+                className={`filter ${appFilter === id ? "active" : ""}`}
+                data-filter={id}
+                type="button"
+                key={id}
+                onClick={() => setAppFilter(id)}
+              >
+                <span>{t.apps.filters[id]}</span>
+                <strong>{appFilterCounts[id]}</strong>
               </button>
             ))}
           </div>
 
+          <p className="filter-result reveal" aria-live="polite">
+            {t.apps.showing} {filteredApps.length} / {apps.length}
+          </p>
+
           <div className="app-grid" aria-live="polite">
-            {filteredApps.map((app) => (
+            {filteredApps.length > 0 ? filteredApps.map((app) => (
               <button className="app-card reveal" type="button" key={app.name} onClick={() => setSelectedApp(app)}>
                 <img className="app-icon" src={app.icon} alt={`${app.name} icon`} />
                 <div className="app-card-top">
@@ -634,10 +669,18 @@ export function App() {
                     .filter((tag) => !tag.startsWith("appstore"))
                     .map((tag) => (
                       <span key={tag}>{tag.replace("-", " ")}</span>
-                    ))}
+                  ))}
                 </div>
               </button>
-            ))}
+            )) : (
+              <div className="empty-state">
+                <h3>{t.apps.emptyTitle}</h3>
+                <p>{t.apps.emptyBody}</p>
+                <button className="button secondary" type="button" onClick={() => setAppFilter("all")}>
+                  {t.apps.filters.all}
+                </button>
+              </div>
+            )}
           </div>
         </section>
 
@@ -708,6 +751,15 @@ export function App() {
               <p className="eyebrow">{t.contact.eyebrow}</p>
               <h2>{t.contact.title}</h2>
               <p>{t.contact.body}</p>
+              <div className="contact-promo">
+                <span>Custom iOS product</span>
+                <strong>{t.contact.promoTitle}</strong>
+                <p>{t.contact.promoBody}</p>
+              </div>
+              <div className="contact-proof">
+                <span>{t.contact.direct}</span>
+                <strong>ikanev@icloud.com</strong>
+              </div>
               <div className="contact-methods">
                 <a href="mailto:ikanev@icloud.com">ikanev@icloud.com</a>
                 <a href="https://ivan-kanev.github.io/IvanKanev-iOS-Apps-Status/#appsGrid" target="_blank" rel="noreferrer">
@@ -717,14 +769,23 @@ export function App() {
             </div>
 
             <form className="contact-form reveal" onSubmit={handleContactSubmit}>
-              <label>
-                <span>{t.contact.name}</span>
-                <input name="name" type="text" autoComplete="name" required placeholder={t.contact.namePlaceholder} />
-              </label>
-              <label>
-                <span>{t.contact.email}</span>
-                <input name="email" type="email" autoComplete="email" required placeholder={t.contact.emailPlaceholder} />
-              </label>
+              <div className="form-head">
+                <div>
+                  <span>{t.contact.formTitle}</span>
+                  <strong>UDesign / Ivan Kanev</strong>
+                </div>
+                <p>{t.contact.formNote}</p>
+              </div>
+              <div className="form-grid">
+                <label>
+                  <span>{t.contact.name}</span>
+                  <input name="name" type="text" autoComplete="name" required placeholder={t.contact.namePlaceholder} />
+                </label>
+                <label>
+                  <span>{t.contact.email}</span>
+                  <input name="email" type="email" autoComplete="email" required placeholder={t.contact.emailPlaceholder} />
+                </label>
+              </div>
               <label>
                 <span>{t.contact.topic}</span>
                 <select name="topic" defaultValue={t.contact.topics[0]}>
@@ -735,8 +796,9 @@ export function App() {
               </label>
               <label>
                 <span>{t.contact.message}</span>
-                <textarea name="message" rows={5} required placeholder={t.contact.messagePlaceholder} />
+                <textarea name="message" rows={6} required minLength={12} placeholder={t.contact.messagePlaceholder} />
               </label>
+              <p className="form-disclaimer">{t.contact.footer}</p>
               <button className="button primary" type="submit">
                 {t.contact.submit}
               </button>
