@@ -59,7 +59,7 @@ const checks = [
   ["technology prompt", prompt.includes("React, TypeScript, and Vite") && prompt.includes("GSAP ScrollTrigger")],
   ["professional contact", app.includes("handleContactSubmit") && app.includes("CONTACT_ENDPOINT") && app.includes("fetch(CONTACT_ENDPOINT") && app.includes("Send directly") && app.includes("replyTo") && app.includes("About Ivan")],
   ["working app filters", app.includes("AppFilterId") && app.includes("activeAppFilter") && app.includes("aria-pressed") && app.includes("data-filter") && css.includes(".filter-result")],
-  ["language switcher", app.includes("udesign-language") && app.includes("languageOptions") && app.includes("localizedCopy") && app.includes("language-flag") && app.includes("Deutsch") && app.includes("Russian")],
+  ["language switcher", app.includes("udesign-language") && app.includes("languageOptions") && app.includes("localizedCopy") && app.includes("flag") && app.includes("Deutsch") && app.includes("Russian")],
   ["theme switcher", app.includes("udesign-theme") && app.includes("setTheme") && css.includes(':root[data-theme="light"]') && css.includes(".site-controls")],
   ["real app content", data.includes("UPerifery") && data.includes("UPlugPay") && data.includes("Ready for Distribution")]
 ];

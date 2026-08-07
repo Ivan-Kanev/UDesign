@@ -718,6 +718,7 @@ export function App() {
   const appFilterCounts = Object.fromEntries(appFilters.map((filter) => [filter.id, apps.filter(filter.matches).length])) as Record<AppFilterId, number>;
   const filteredStatusApps = statusFilter === "all" ? apps : apps.filter((app) => app.statusKind === statusFilter);
   const orbitApps = apps.slice(0, 9);
+  const identityApps = apps.filter((app) => app.tags.includes("u-family")).slice(0, 4);
 
   const randomApp = useMemo(() => () => apps[Math.floor(Math.random() * apps.length)], []);
 
@@ -829,13 +830,10 @@ export function App() {
         <div className="site-controls" aria-label="Site preferences">
           <label className="language-control">
             <span className="sr-only">{t.controls.language}</span>
-            <span className="language-flag" aria-hidden="true">
-              {languageOptions.find((option) => option.value === language)?.flag}
-            </span>
             <select value={language} onChange={(event) => setLanguage(event.target.value as Language)} aria-label={t.controls.language}>
               {languageOptions.map((option) => (
                 <option key={option.value} value={option.value}>
-                  {option.label}
+                  {option.flag} {option.label}
                 </option>
               ))}
             </select>
@@ -1014,9 +1012,16 @@ export function App() {
         </section>
 
         <section className="section identity" id="identity">
-          <div className="section-heading reveal">
-            <p className="eyebrow">{t.identity.eyebrow}</p>
-            <h2>{t.identity.title}</h2>
+          <div className="section-heading split identity-heading reveal">
+            <div>
+              <p className="eyebrow">{t.identity.eyebrow}</p>
+              <h2>{t.identity.title}</h2>
+            </div>
+            <div className="identity-summary" aria-label="UDesign studio summary">
+              <span>UDesign OS</span>
+              <strong>{apps.length} apps, one recognizable product language.</strong>
+              <p>U family, finance tools, learning apps, lifestyle utilities, and launch pages all connected by one studio standard.</p>
+            </div>
           </div>
           <div className="identity-layout">
             <div className="identity-stage reveal">
@@ -1030,13 +1035,27 @@ export function App() {
                 </div>
               </div>
             </div>
-            <div className="system-list">
-              {t.identity.cards.map(([title, copy]) => (
-                <article className="reveal" key={title}>
-                  <h3>{title}</h3>
-                  <p>{copy}</p>
-                </article>
-              ))}
+            <div className="identity-system reveal">
+              <div className="identity-system-head">
+                <span>Studio signature</span>
+                <strong>Designed to feel connected before you read a word.</strong>
+              </div>
+              <div className="identity-app-strip" aria-label="UDesign family apps">
+                {identityApps.map((app) => (
+                  <button type="button" key={app.name} onClick={() => setSelectedApp(app)}>
+                    <img src={app.icon} alt={`${app.name} icon`} />
+                    <span>{app.name}</span>
+                  </button>
+                ))}
+              </div>
+              <div className="system-list">
+                {t.identity.cards.map(([title, copy]) => (
+                  <article key={title}>
+                    <h3>{title}</h3>
+                    <p>{copy}</p>
+                  </article>
+                ))}
+              </div>
             </div>
           </div>
         </section>
