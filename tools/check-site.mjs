@@ -50,7 +50,7 @@ const checks = [
   ["description", appHtml.includes("UPerifery") && appHtml.includes("UPlugPay")],
   ["published root", html.includes("./assets/site/") && !html.includes("/src/main.tsx")],
   ["vite source entry", appHtml.includes('src="/src/main.tsx"')],
-  ["sections", ["ecosystem", "status", "apps", "identity", "about", "contact", "studio"].every((id) => app.includes(`id="${id}"`))],
+  ["sections", ["ecosystem", "apps", "identity", "about", "contact", "studio"].every((id) => app.includes(`id="${id}"`)) && !app.includes('id="status"')],
   ["reduced motion", css.includes("prefers-reduced-motion")],
   ["keyboard skip link", app.includes("Skip to content")],
   ["gsap scrolltrigger", motion.includes("ScrollTrigger")],

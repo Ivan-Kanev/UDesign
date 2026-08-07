@@ -13,7 +13,6 @@ const CONTACT_ENDPOINT = import.meta.env.VITE_CONTACT_ENDPOINT ?? "https://forms
 
 const navItems = [
   ["ecosystem", "ecosystem"],
-  ["status", "status"],
   ["apps", "apps"],
   ["identity", "identity"],
   ["about", "about"],
@@ -55,13 +54,6 @@ const copy = {
       ],
     },
     status: {
-      eyebrow: "App Store Connect Snapshot",
-      title: "Your portfolio status, translated into a premium command center.",
-      ready: "ready",
-      review: "in review",
-      all: "All statuses",
-      readyFilter: "Ready for Distribution",
-      reviewFilter: "Waiting for Review",
       readyLabel: "Ready for Distribution",
       reviewLabel: "Waiting for Review",
     },
@@ -184,13 +176,6 @@ const copy = {
       ],
     },
     status: {
-      eyebrow: "App Store Connect snapshot",
-      title: "Статусът на портфолиото, превърнат в премиум команден център.",
-      ready: "готови",
-      review: "в преглед",
-      all: "Всички статуси",
-      readyFilter: "Ready for Distribution",
-      reviewFilter: "Waiting for Review",
       readyLabel: "Ready for Distribution",
       reviewLabel: "Waiting for Review",
     },
@@ -324,13 +309,6 @@ const localizedCopy: Record<Language, CopyBundle> = {
       ],
     },
     status: {
-      eyebrow: "App Store Connect Snapshot",
-      title: "Dein Portfolio-Status als Premium-Command-Center.",
-      ready: "bereit",
-      review: "in Prufung",
-      all: "Alle Status",
-      readyFilter: "Ready for Distribution",
-      reviewFilter: "Waiting for Review",
       readyLabel: "Ready for Distribution",
       reviewLabel: "Waiting for Review",
     },
@@ -415,7 +393,7 @@ const localizedCopy: Record<Language, CopyBundle> = {
         ["03", "Portfolio vivant", "Le site agit comme un hub produit, avec details cliquables, filtres par categorie et liens directs vers les pages publiques."],
       ],
     },
-    status: { ...copy.en.status, eyebrow: "Snapshot App Store Connect", title: "Le statut de ton portfolio transforme en command center premium.", ready: "pretes", review: "en revue", all: "Tous les statuts" },
+    status: copy.en.status,
     apps: {
       ...copy.en.apps,
       eyebrow: "Ecosysteme d'apps",
@@ -497,7 +475,7 @@ const localizedCopy: Record<Language, CopyBundle> = {
         ["03", "Живое портфолио", "Сайт работает как продуктовый hub с кликабельными деталями приложений, фильтрами и прямыми ссылками на публичные страницы."],
       ],
     },
-    status: { ...copy.en.status, eyebrow: "App Store Connect snapshot", title: "Статус портфолио в формате премиального command center.", ready: "готовы", review: "на проверке", all: "Все статусы" },
+    status: copy.en.status,
     apps: {
       ...copy.en.apps,
       eyebrow: "Экосистема приложений",
@@ -577,12 +555,6 @@ const appFilters: Array<{ id: AppFilterId; matches: (app: AppInfo) => boolean }>
   { id: "appstore-ready", matches: (app) => app.statusKind === "ready" },
   { id: "appstore-review", matches: (app) => app.statusKind === "review" },
 ];
-
-const statusFilters = [
-  "all",
-  "ready",
-  "review",
-] as const;
 
 function getStoredLanguage(): Language {
   if (typeof window === "undefined") return "en";
@@ -701,7 +673,6 @@ export function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [selectedApp, setSelectedApp] = useState<AppInfo | null>(null);
   const [appFilter, setAppFilter] = useState<AppFilterId>("all");
-  const [statusFilter, setStatusFilter] = useState<"all" | StatusKind>("all");
   const [contactStatus, setContactStatus] = useState("");
   const [contactStatusKind, setContactStatusKind] = useState<ContactStatusKind>("");
   const [contactSending, setContactSending] = useState(false);
@@ -711,12 +682,9 @@ export function App() {
 
   useMotionSystem();
 
-  const readyCount = apps.filter((app) => app.statusKind === "ready").length;
-  const reviewCount = apps.filter((app) => app.statusKind === "review").length;
   const activeAppFilter = appFilters.find((filter) => filter.id === appFilter) ?? appFilters[0];
   const filteredApps = apps.filter(activeAppFilter.matches);
   const appFilterCounts = Object.fromEntries(appFilters.map((filter) => [filter.id, apps.filter(filter.matches).length])) as Record<AppFilterId, number>;
-  const filteredStatusApps = statusFilter === "all" ? apps : apps.filter((app) => app.statusKind === statusFilter);
   const orbitApps = apps.slice(0, 9);
   const identityApps = apps.filter((app) => app.tags.includes("u-family")).slice(0, 4);
 
@@ -871,9 +839,12 @@ export function App() {
               <span>U / OS</span>
               <strong>{t.hero.signals}</strong>
             </div>
-            <div className="icon-orbit" aria-hidden="true">
+            <div className="icon-orbit" aria-label="Open app details">
               {orbitApps.map((app) => (
-                <img className="orbit-icon" src={app.icon} alt="" key={app.name} />
+                <button className="orbit-button" type="button" key={app.name} onClick={() => setSelectedApp(app)} aria-label={`Open ${app.name} details`}>
+                  <img className="orbit-icon" src={app.icon} alt="" />
+                  <span>{app.name}</span>
+                </button>
               ))}
             </div>
             <div className="deck-actions">
@@ -898,44 +869,6 @@ export function App() {
                 <h3>{title}</h3>
                 <p>{copy}</p>
               </article>
-            ))}
-          </div>
-        </section>
-
-        <section className="section status-section" id="status">
-          <div className="section-heading split reveal">
-            <div>
-              <p className="eyebrow">{t.status.eyebrow}</p>
-              <h2>{t.status.title}</h2>
-            </div>
-            <div className="status-summary" aria-label="App Store Connect summary">
-              <span className="summary-ready">
-                <strong>{readyCount}</strong> {t.status.ready}
-              </span>
-              <span className="summary-review">
-                <strong>{reviewCount}</strong> {t.status.review}
-              </span>
-            </div>
-          </div>
-
-          <div className="status-toolbar reveal" aria-label="Filter App Store Connect status">
-            {statusFilters.map((value) => (
-              <button className={`status-filter ${statusFilter === value ? "active" : ""}`} type="button" key={value} onClick={() => setStatusFilter(value)}>
-                {value === "all" ? t.status.all : t.status[statusCopyKey[value]]}
-              </button>
-            ))}
-          </div>
-
-          <div className="status-board" aria-live="polite">
-            {filteredStatusApps.map((app) => (
-              <button className="status-card reveal" type="button" key={app.name} onClick={() => setSelectedApp(app)}>
-                <img src={app.icon} alt={`${app.name} icon`} />
-                <div>
-                  <h3>{app.name}</h3>
-                  <p>{app.version}</p>
-                  <StatusPill kind={app.statusKind} label={t.status[statusCopyKey[app.statusKind]]} />
-                </div>
-              </button>
             ))}
           </div>
         </section>
@@ -1012,16 +945,9 @@ export function App() {
         </section>
 
         <section className="section identity" id="identity">
-          <div className="section-heading split identity-heading reveal">
-            <div>
-              <p className="eyebrow">{t.identity.eyebrow}</p>
-              <h2>{t.identity.title}</h2>
-            </div>
-            <div className="identity-summary" aria-label="UDesign studio summary">
-              <span>UDesign OS</span>
-              <strong>{apps.length} apps, one recognizable product language.</strong>
-              <p>U family, finance tools, learning apps, lifestyle utilities, and launch pages all connected by one studio standard.</p>
-            </div>
+          <div className="section-heading identity-heading reveal">
+            <p className="eyebrow">{t.identity.eyebrow}</p>
+            <h2>{t.identity.title}</h2>
           </div>
           <div className="identity-layout">
             <div className="identity-stage reveal">
@@ -1036,10 +962,6 @@ export function App() {
               </div>
             </div>
             <div className="identity-system reveal">
-              <div className="identity-system-head">
-                <span>Studio signature</span>
-                <strong>Designed to feel connected before you read a word.</strong>
-              </div>
               <div className="identity-app-strip" aria-label="UDesign family apps">
                 {identityApps.map((app) => (
                   <button type="button" key={app.name} onClick={() => setSelectedApp(app)}>
@@ -1104,13 +1026,14 @@ export function App() {
                 <strong>{t.contact.promoTitle}</strong>
                 <p>{t.contact.promoBody}</p>
               </div>
-              <div className="contact-proof">
-                <span>{t.contact.direct}</span>
-                <strong>ikanev@icloud.com</strong>
-              </div>
-              <div className="contact-methods">
-                <a href="https://ivan-kanev.github.io/IvanKanev-iOS-Apps-Status/#appsGrid" target="_blank" rel="noreferrer">
-                  {t.contact.portfolio}
+              <div className="contact-actions-panel">
+                <a className="contact-proof" href="mailto:ikanev@icloud.com">
+                  <span>{t.contact.direct}</span>
+                  <strong>ikanev@icloud.com</strong>
+                </a>
+                <a className="contact-proof" href="https://ivan-kanev.github.io/IvanKanev-iOS-Apps-Status/#appsGrid" target="_blank" rel="noreferrer">
+                  <span>{t.nav.live}</span>
+                  <strong>{t.contact.portfolio}</strong>
                 </a>
               </div>
             </div>
