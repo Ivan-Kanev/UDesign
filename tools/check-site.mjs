@@ -12,7 +12,6 @@ const requiredFiles = [
   "assets/favicon.svg",
   "assets/site",
   "assets/apps/ufood.png",
-  "assets/apps/videoy.png",
   "assets/apps/avocue.png",
   "assets/apps/switchair.png",
   "assets/apps/budgetflow.png",
@@ -20,7 +19,6 @@ const requiredFiles = [
   "assets/apps/ucircuit.PNG",
   "assets/apps/gitbudget.PNG",
   "assets/apps/circuitlabdesigner.png",
-  "assets/appstore-connect/videoy.png",
   "assets/appstore-connect/uperifery.png",
   "assets/appstore-connect/uplugpay.png",
   "assets/appstore-connect/ucircuit.png",
@@ -59,9 +57,9 @@ const checks = [
   ["lenis", motion.includes("Lenis")],
   ["three hero", three.includes("THREE")],
   ["technology prompt", prompt.includes("React, TypeScript, and Vite") && prompt.includes("GSAP ScrollTrigger")],
-  ["professional contact", app.includes("handleContactSubmit") && app.includes("Send from my email") && app.includes("replyTo") && app.includes("About Ivan")],
+  ["professional contact", app.includes("handleContactSubmit") && app.includes("CONTACT_ENDPOINT") && app.includes("fetch(CONTACT_ENDPOINT") && app.includes("Send directly") && app.includes("replyTo") && app.includes("About Ivan")],
   ["working app filters", app.includes("AppFilterId") && app.includes("activeAppFilter") && app.includes("aria-pressed") && app.includes("data-filter") && css.includes(".filter-result")],
-  ["language switcher", app.includes("udesign-language") && app.includes("setLanguage") && app.includes("EN") && app.includes("BG")],
+  ["language switcher", app.includes("udesign-language") && app.includes("languageOptions") && app.includes("localizedCopy") && app.includes("language-flag") && app.includes("Deutsch") && app.includes("Russian")],
   ["theme switcher", app.includes("udesign-theme") && app.includes("setTheme") && css.includes(':root[data-theme="light"]') && css.includes(".site-controls")],
   ["real app content", data.includes("UPerifery") && data.includes("UPlugPay") && data.includes("Ready for Distribution")]
 ];

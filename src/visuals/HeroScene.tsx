@@ -25,8 +25,8 @@ export function HeroScene() {
       mount.appendChild(renderer.domElement);
 
       const signalSystem = new THREE.Group();
-      signalSystem.position.set(1.45, -0.16, 0);
-      signalSystem.scale.setScalar(1.08);
+      signalSystem.position.set(1.9, -0.08, -0.45);
+      signalSystem.scale.setScalar(0.86);
       scene.add(signalSystem);
 
       const makeLine = (points: Array<ThreeTypes.Vector3>, color: number, opacity: number) => {
@@ -75,11 +75,11 @@ export function HeroScene() {
         new THREE.Vector3(0.76, 1.08, 0.05),
       ]);
 
-      const orbitA = makeLine(sampleEllipse(2.75, 0.72, -0.18, -0.32), 0x66e9ff, 0.28);
-      const orbitB = makeLine(sampleEllipse(2.2, 1.08, 0.42, -0.22), 0x86ffb6, 0.16);
-      const outerU = makeLine(uPoints, 0x66e9ff, 0.5);
-      const innerU = makeLine(innerUCurve.getPoints(140), 0xf6f8fb, 0.18);
-      const ikStem = makeLine([new THREE.Vector3(-0.08, 1.25, 0.16), new THREE.Vector3(-0.08, -0.98, 0.16)], 0xf6f8fb, 0.24);
+      const orbitA = makeLine(sampleEllipse(2.75, 0.72, -0.18, -0.32), 0x66e9ff, 0.16);
+      const orbitB = makeLine(sampleEllipse(2.2, 1.08, 0.42, -0.22), 0x86ffb6, 0.1);
+      const outerU = makeLine(uPoints, 0x66e9ff, 0.26);
+      const innerU = makeLine(innerUCurve.getPoints(140), 0xf6f8fb, 0.1);
+      const ikStem = makeLine([new THREE.Vector3(-0.08, 1.25, 0.16), new THREE.Vector3(-0.08, -0.98, 0.16)], 0xf6f8fb, 0.12);
       const ikK = makeLine(
         [
           new THREE.Vector3(0.18, 0.28, 0.18),
@@ -88,13 +88,13 @@ export function HeroScene() {
           new THREE.Vector3(0.86, -0.96, 0.18),
         ],
         0x86ffb6,
-        0.3,
+        0.16,
       );
 
       const glowMaterial = new THREE.MeshBasicMaterial({
         color: 0x66e9ff,
         transparent: true,
-        opacity: 0.1,
+        opacity: 0.055,
         blending: THREE.AdditiveBlending,
         depthWrite: false,
       });
@@ -108,7 +108,7 @@ export function HeroScene() {
       const particleMaterial = new THREE.MeshBasicMaterial({
         color: 0x86ffb6,
         transparent: true,
-        opacity: 0.9,
+        opacity: 0.48,
         blending: THREE.AdditiveBlending,
         depthWrite: false,
       });
@@ -120,7 +120,7 @@ export function HeroScene() {
       const sparkMaterial = new THREE.MeshBasicMaterial({
         color: 0xf6f8fb,
         transparent: true,
-        opacity: 0.58,
+        opacity: 0.32,
         blending: THREE.AdditiveBlending,
         depthWrite: false,
       });
@@ -135,16 +135,16 @@ export function HeroScene() {
         frame = requestAnimationFrame(animate);
         const time = performance.now() * 0.001;
 
-        signalSystem.rotation.y = Math.sin(time * 0.34) * 0.16;
-        signalSystem.rotation.x = Math.sin(time * 0.22) * 0.045;
-        orbitA.rotation.z = time * 0.04;
-        orbitB.rotation.z = -time * 0.055;
-        halo.rotation.z = -0.18 + Math.sin(time * 0.6) * 0.04;
+        signalSystem.rotation.y = Math.sin(time * 0.18) * 0.08;
+        signalSystem.rotation.x = Math.sin(time * 0.16) * 0.025;
+        orbitA.rotation.z = time * 0.018;
+        orbitB.rotation.z = -time * 0.022;
+        halo.rotation.z = -0.18 + Math.sin(time * 0.32) * 0.018;
 
         for (let i = 0; i < particles.count; i += 1) {
           const path = i % 3 === 0 ? innerUCurve : uCurve;
-          const point = path.getPoint((time * 0.04 + i / particles.count) % 1);
-          const pulse = 0.62 + Math.sin(time * 2.3 + i) * 0.22;
+          const point = path.getPoint((time * 0.018 + i / particles.count) % 1);
+          const pulse = 0.5 + Math.sin(time * 1.25 + i) * 0.12;
           dummy.position.copy(point);
           dummy.position.z += Math.sin(time + i) * 0.12;
           dummy.scale.setScalar(pulse);
@@ -154,10 +154,10 @@ export function HeroScene() {
         particles.instanceMatrix.needsUpdate = true;
 
         for (let i = 0; i < sparks.count; i += 1) {
-          const angle = i * 2.399 + time * (0.18 + (i % 5) * 0.014);
+          const angle = i * 2.399 + time * (0.065 + (i % 5) * 0.006);
           const radius = 0.85 + (i % 12) * 0.17;
           dummy.position.set(Math.cos(angle) * radius, Math.sin(angle * 0.74) * radius * 0.46, -0.5 + (i % 7) * 0.08);
-          dummy.scale.setScalar(0.7 + Math.sin(time * 1.8 + i) * 0.28);
+          dummy.scale.setScalar(0.48 + Math.sin(time * 0.9 + i) * 0.14);
           dummy.updateMatrix();
           sparks.setMatrixAt(i, dummy.matrix);
         }
@@ -208,14 +208,10 @@ export function HeroScene() {
   return (
     <div className="hero-backdrop" aria-hidden="true">
       <div className="three-scene brand-signal-scene" ref={mountRef} />
-      <div className="brand-sigil-signature">
-        <span>UDesign</span>
-        <strong>IK</strong>
-      </div>
       <div className="hero-grid" />
-      <div className="signal-thread thread-one" />
-      <div className="signal-thread thread-two" />
-      <div className="signal-thread thread-three" />
+      <div className="ambient-thread thread-one" />
+      <div className="ambient-thread thread-two" />
+      <div className="ambient-thread thread-three" />
     </div>
   );
 }

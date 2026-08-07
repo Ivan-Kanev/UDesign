@@ -1,6 +1,6 @@
 # UDesign
 
-UDesign is the umbrella identity for Ivan Kanev's ecosystem of focused software products: VideoY, UPerifery, UPlugPay, UCircuit, GitBudgetStudio, SwitchAir, AvoCue, UFood, BudgetFlowStudio, UProxi, CircuitLab Designer, and future products built around the same signature letter.
+UDesign is the umbrella identity for Ivan Kanev's ecosystem of focused software products: UPerifery, UPlugPay, UCircuit, GitBudgetStudio, SwitchAir, AvoCue, UFood, BudgetFlowStudio, UProxi, CircuitLab Designer, and future products built around the same signature letter.
 
 The site is built with React, TypeScript, and Vite so it can grow as a polished product hub while still deploying cleanly to GitHub Pages as static files. The brand system uses the `U` as the master mark, product names as family extensions, and a restrained dark interface with luminous cyan, signal green, white, and graphite accents.
 

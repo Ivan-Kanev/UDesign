@@ -22,24 +22,6 @@ export const statusLabels: Record<StatusKind, string> = {
 
 export const apps: AppInfo[] = [
   {
-    name: "VideoY",
-    version: "iOS 1.0.4",
-    statusKind: "review",
-    icon: "assets/appstore-connect/videoy.png",
-    category: "Utility",
-    tags: ["utility", "appstore-review"],
-    subtitle: "Clean YouTube-focused web experience",
-    marketing: "https://ivan-kanev.github.io/videoy-support/index.html",
-    support: "https://ivan-kanev.github.io/videoy-support/support.html",
-    privacy: "https://ivan-kanev.github.io/videoy-support/privacy.html",
-    description: "A lightweight app that opens a focused YouTube mobile web experience with native controls for navigation, sharing, refresh, and sign-in.",
-    features: [
-      "Launches directly into the YouTube mobile web experience.",
-      "Includes native home, back, forward, refresh, sign-in, and sharing controls.",
-      "Currently waiting for App Review, with review messages visible in App Store Connect.",
-    ],
-  },
-  {
     name: "UPerifery",
     version: "iOS 1.0",
     statusKind: "review",
