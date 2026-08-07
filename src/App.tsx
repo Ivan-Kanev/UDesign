@@ -835,7 +835,7 @@ export function App() {
             <select value={language} onChange={(event) => setLanguage(event.target.value as Language)} aria-label={t.controls.language}>
               {languageOptions.map((option) => (
                 <option key={option.value} value={option.value}>
-                  {option.flag} {option.label}
+                  {option.label}
                 </option>
               ))}
             </select>
@@ -1090,7 +1090,6 @@ export function App() {
                 <strong>ikanev@icloud.com</strong>
               </div>
               <div className="contact-methods">
-                <span>ikanev@icloud.com</span>
                 <a href="https://ivan-kanev.github.io/IvanKanev-iOS-Apps-Status/#appsGrid" target="_blank" rel="noreferrer">
                   {t.contact.portfolio}
                 </a>
